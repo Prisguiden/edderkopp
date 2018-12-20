@@ -39,7 +39,7 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "cheerio": "^0.20.0",
-    "puppeteer": "^1.10.0",
+    "puppeteer": "^1.11.0",
     "request": "^2.72.0",
     "robots-parser": "^1.0.0",
     "winston": "^2.2.0"
