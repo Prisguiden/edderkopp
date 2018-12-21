@@ -3,12 +3,12 @@ import puppeteer from "puppeteer";
 
 export default class Download {
 
-    _timeout = 60000;
+    _timeout = 30000;
     _cache = false;
     _delay = [2, 5]; // delay 2-5 sec (simulate a user)
     _force = false;
     _followRedirect = true;
-    _renderWithJs = false;
+    _renderWithBrowser = false;
 
     constructor(options) {
         if (options.timeout !== undefined) { this._timeout = options.timeout; }
@@ -16,7 +16,8 @@ export default class Download {
         if (options.cache !== undefined) { this._cache = options.cache; }
         if (options.force !== undefined) { this._force = options.force; }
         if (options.followRedirect !== undefined) { this._followRedirect = options.followRedirect; }
-        if (options.renderWithJs !== undefined) { this._renderWithJs = options.renderWithJs; }
+        if (options.renderWithBrowser !== undefined) { this._renderWithBrowser = options.renderWithBrowser; }
+        if (options.headers !== undefined) { this._headers = options.headers; }
     }
 
     get(url, cookies) {
@@ -53,14 +54,17 @@ export default class Download {
                     },
                     followRedirect: this._followRedirect,
                     gzip: true,
-                    timeout: this._timeout
+                    timeout: this._timeout,
+                    bannedRequestUrlsRegexp: BANNED_REQUEST_URLS_REGEXP ? BANNED_REQUEST_URLS_REGEXP : []
                 };
+                if (this._headers) {
+                    options.headers = {...options.headers, ...this._headers};
+                }
                 if (this._jar) {
                     options.jar = this._jar;
                 }
                 let res = null;
-                if (this._renderWithJs) {
-                    console.log("downloading with puppeteer");
+                if (this._renderWithBrowser) {
                     res = await this._downloadWithPuppeteer(options);
                 } else {
                     res = await this._download(options);
@@ -96,9 +100,8 @@ export default class Download {
     _downloadWithPuppeteer(options) {
         return new Promise(async (resolve, reject) => {
             const t0 = process.hrtime();
-            let i = 0;
-            let response = {};
             let debug = false;
+            let abortMessage = '';
             const browser = await puppeteer.launch({
                 headless: true,
                 slowMo: 0 // slow down by ms
@@ -107,79 +110,79 @@ export default class Download {
             /**
              * Handle exceptions
              */
-            process.on("unhandledRejection", (reason, p) => {
-                let error = "Unhandled Rejection at: Promise " + p + " reason: " + reason;
-                browser.close();
-                reject(error);
+            page.on('error', async (err) => {
+                await browser.close();
+                reject("error: " + err.toString());
             });
-            page.on('error', msg => {
-                browser.close();
-                reject(msg);
-            });
-            page.on('pageerror', msg => {
-                browser.close();
-                reject(msg);
+            page.on('pageerror', err => {
+                if (debug) {
+                    console.log(err.toString());
+                }
             });
 
-            // TODO handle redirects based on this._followRedirect
+            if (options.headers) {
+                let headersToSet = {};
+                for (let key in options.headers) {
+                    headersToSet[key.toLowerCase()] = options.headers[key];
+                }
+                await page.setExtraHTTPHeaders(headersToSet);
+            }
+
             await page.setRequestInterception(true);
-            /*
-            page.on('response', res => {
-                if (i < 5) {
-                    console.log(res.url());
-                }
-                //console.log(res);
-                const status = res.status()
-                if ((status >= 300) && (status <= 399)) {
-                    console.log('Redirect from', res.url(), 'to', res.headers()['location']);
-                    if (i === 2) {
-                        if (debug) {
-                            console.log('Redirect from', res.url(), 'to', res.headers()['location'])
-                        }
-                        response.redirectUrl = res.headers()['location'];
-                    }
-                }
-            });
-            */
 
             // for each request/resource download
             page.on('request', request => {
-                i++;
-                // Do nothing in case of non-navigation requests.
-                if (!request.isNavigationRequest()) {
-                    request.continue();
-                    return;
-                }
-                if (debug) {
-                    console.log(request.url());
-                }
-
-                // Add a new header for navigation request.
-                let headers = request.headers();
-                if (options.headers) {
-                    for (let key in options.headers) {
-                        headers[key.toLowerCase()] = options.headers[key];
-                    }
+                let requestUrl = request.url();
+                // Handle navigation redirects based on followRedirect option.
+                if (!options.followRedirect && request.isNavigationRequest() && request.redirectChain().length) {
+                    let prevResponse = request.redirectChain()[0].response();
+                    abortMessage = `Aborting redirect for url: ${requestUrl} status: ${prevResponse.status()} status: ${prevResponse.statusText()}`;
+                    request.abort();
                 } else {
-                    headers['user-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36';
+                    // Skip certain requests
+                    if (requestUrl) {
+                        for (let regexp of options.bannedRequestUrlsRegexp) {
+                            if (requestUrl.match(regexp)) {
+                                request.abort();
+                                return;
+                            }
+                        }
+                    }
+                    request.continue();
                 }
-                request.continue({ headers });
             });
 
-            response = await page.goto(options.url);
-            let headers = response.headers();
-            let statusCode = response.status();
-            //await page.waitFor(2000);
+            let navigateOptions = {
+                timeout: options.timeout,
+                waitUntil: 'load' // TODO create option for waitUntil
+            }
+            // Begin navigating to url
+            let gotoError = null;
+            let response = await page.goto(options.url, navigateOptions).catch(async (err) => {
+                await browser.close();
+                gotoError = abortMessage ? new Error(abortMessage) : new Error(err);
+            });
 
-            let content = await page.evaluate(() => document.documentElement.outerHTML);
-            await browser.close();
+            if (!response) {
+                let rejectMsg = gotoError || new Error(`Unhandled response from page.goto`);
+                reject(rejectMsg);
+            } else {
+                let headers = response.headers();
+                let statusCode = response.status();
+                // Get html
+                let content = await page.evaluate(() => document.documentElement.outerHTML);;
 
-            // Debug info
-            let diff = process.hrtime(t0);
-            let time = diff[0] + diff[1] * 1e-9;
+                // await page.screenshot({'path':'/path/to/save/screenshot'});
 
-            if (this._cache) { this._cache.set(options.url, content); }
-            resolve({ statusCode: statusCode, headers: headers, content, time });
+                await browser.close();
+
+                // Debug info
+                let diff = process.hrtime(t0);
+                let time = diff[0] + diff[1] * 1e-9;
+
+                if (this._cache) { this._cache.set(options.url, content); }
+                resolve({ statusCode: statusCode, headers: headers, content, time });
+            }
         });
     }
 }

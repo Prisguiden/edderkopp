@@ -8,6 +8,10 @@ var _regenerator = require("babel-runtime/regenerator");
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _extends2 = require("babel-runtime/helpers/extends");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _asyncToGenerator2 = require("babel-runtime/helpers/asyncToGenerator");
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -41,12 +45,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Download = function () {
     function Download(options) {
         (0, _classCallCheck3.default)(this, Download);
-        this._timeout = 60000;
+        this._timeout = 30000;
         this._cache = false;
         this._delay = [2, 5];
         this._force = false;
         this._followRedirect = true;
-        this._renderWithJs = false;
+        this._renderWithBrowser = false;
 
         if (options.timeout !== undefined) {
             this._timeout = options.timeout;
@@ -63,8 +67,11 @@ var Download = function () {
         if (options.followRedirect !== undefined) {
             this._followRedirect = options.followRedirect;
         }
-        if (options.renderWithJs !== undefined) {
-            this._renderWithJs = options.renderWithJs;
+        if (options.renderWithBrowser !== undefined) {
+            this._renderWithBrowser = options.renderWithBrowser;
+        }
+        if (options.headers !== undefined) {
+            this._headers = options.headers;
         }
     } // delay 2-5 sec (simulate a user)
 
@@ -147,20 +154,23 @@ var Download = function () {
                                         },
                                         followRedirect: _this._followRedirect,
                                         gzip: true,
-                                        timeout: _this._timeout
+                                        timeout: _this._timeout,
+                                        bannedRequestUrlsRegexp: BANNED_REQUEST_URLS_REGEXP ? BANNED_REQUEST_URLS_REGEXP : []
                                     };
 
+                                    if (_this._headers) {
+                                        options.headers = (0, _extends3.default)({}, options.headers, _this._headers);
+                                    }
                                     if (_this._jar) {
                                         options.jar = _this._jar;
                                     }
                                     res = null;
 
-                                    if (!_this._renderWithJs) {
+                                    if (!_this._renderWithBrowser) {
                                         _context.next = 18;
                                         break;
                                     }
 
-                                    console.log("downloading with puppeteer");
                                     _context.next = 15;
                                     return _this._downloadWithPuppeteer(options);
 
@@ -223,115 +233,191 @@ var Download = function () {
             var _this3 = this;
 
             return new _promise2.default(function () {
-                var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(resolve, reject) {
-                    var t0, i, response, debug, browser, page, headers, statusCode, content, diff, time;
-                    return _regenerator2.default.wrap(function _callee2$(_context2) {
+                var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(resolve, reject) {
+                    var t0, debug, abortMessage, browser, page, headersToSet, key, navigateOptions, gotoError, response, rejectMsg, headers, statusCode, content, diff, time;
+                    return _regenerator2.default.wrap(function _callee4$(_context4) {
                         while (1) {
-                            switch (_context2.prev = _context2.next) {
+                            switch (_context4.prev = _context4.next) {
                                 case 0:
                                     t0 = process.hrtime();
-                                    i = 0;
-                                    response = {};
                                     debug = false;
-                                    _context2.next = 6;
+                                    abortMessage = '';
+                                    _context4.next = 5;
                                     return _puppeteer2.default.launch({
                                         headless: true,
                                         slowMo: 0 // slow down by ms
                                     });
 
-                                case 6:
-                                    browser = _context2.sent;
-                                    _context2.next = 9;
+                                case 5:
+                                    browser = _context4.sent;
+                                    _context4.next = 8;
                                     return browser.newPage();
 
-                                case 9:
-                                    page = _context2.sent;
+                                case 8:
+                                    page = _context4.sent;
 
                                     /**
                                      * Handle exceptions
                                      */
-                                    process.on("unhandledRejection", function (reason, p) {
-                                        var error = "Unhandled Rejection at: Promise " + p + " reason: " + reason;
-                                        browser.close();
-                                        reject(error);
-                                    });
-                                    page.on('error', function (msg) {
-                                        browser.close();
-                                        reject(msg);
-                                    });
-                                    page.on('pageerror', function (msg) {
-                                        browser.close();
-                                        reject(msg);
+                                    page.on('error', function () {
+                                        var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(err) {
+                                            return _regenerator2.default.wrap(function _callee2$(_context2) {
+                                                while (1) {
+                                                    switch (_context2.prev = _context2.next) {
+                                                        case 0:
+                                                            _context2.next = 2;
+                                                            return browser.close();
+
+                                                        case 2:
+                                                            reject("error: " + err.toString());
+
+                                                        case 3:
+                                                        case "end":
+                                                            return _context2.stop();
+                                                    }
+                                                }
+                                            }, _callee2, _this3);
+                                        }));
+
+                                        return function (_x3) {
+                                            return _ref3.apply(this, arguments);
+                                        };
+                                    }());
+                                    page.on('pageerror', function (err) {
+                                        if (debug) {
+                                            console.log(err.toString());
+                                        }
                                     });
 
-                                    // TODO handle redirects based on this._followRedirect
-                                    _context2.next = 15;
+                                    if (!options.headers) {
+                                        _context4.next = 16;
+                                        break;
+                                    }
+
+                                    headersToSet = {};
+
+                                    for (key in options.headers) {
+                                        headersToSet[key.toLowerCase()] = options.headers[key];
+                                    }
+                                    _context4.next = 16;
+                                    return page.setExtraHTTPHeaders(headersToSet);
+
+                                case 16:
+                                    _context4.next = 18;
                                     return page.setRequestInterception(true);
 
-                                case 15:
-                                    /*
-                                    page.on('response', res => {
-                                        if (i < 5) {
-                                            console.log(res.url());
-                                        }
-                                        //console.log(res);
-                                        const status = res.status()
-                                        if ((status >= 300) && (status <= 399)) {
-                                            console.log('Redirect from', res.url(), 'to', res.headers()['location']);
-                                            if (i === 2) {
-                                                if (debug) {
-                                                    console.log('Redirect from', res.url(), 'to', res.headers()['location'])
-                                                }
-                                                response.redirectUrl = res.headers()['location'];
-                                            }
-                                        }
-                                    });
-                                    */
+                                case 18:
 
                                     // for each request/resource download
                                     page.on('request', function (request) {
-                                        i++;
-                                        // Do nothing in case of non-navigation requests.
-                                        if (!request.isNavigationRequest()) {
-                                            request.continue();
-                                            return;
-                                        }
-                                        if (debug) {
-                                            console.log(request.url());
-                                        }
-
-                                        // Add a new header for navigation request.
-                                        var headers = request.headers();
-                                        if (options.headers) {
-                                            for (var key in options.headers) {
-                                                headers[key.toLowerCase()] = options.headers[key];
-                                            }
+                                        var requestUrl = request.url();
+                                        // Handle navigation redirects based on followRedirect option.
+                                        if (!options.followRedirect && request.isNavigationRequest() && request.redirectChain().length) {
+                                            var prevResponse = request.redirectChain()[0].response();
+                                            abortMessage = "Aborting redirect for url: " + requestUrl + " status: " + prevResponse.status() + " status: " + prevResponse.statusText();
+                                            request.abort();
                                         } else {
-                                            headers['user-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36';
+                                            // Skip certain requests
+                                            if (requestUrl) {
+                                                var _iteratorNormalCompletion2 = true;
+                                                var _didIteratorError2 = false;
+                                                var _iteratorError2 = undefined;
+
+                                                try {
+                                                    for (var _iterator2 = (0, _getIterator3.default)(options.bannedRequestUrlsRegexp), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                                        var regexp = _step2.value;
+
+                                                        if (requestUrl.match(regexp)) {
+                                                            request.abort();
+                                                            return;
+                                                        }
+                                                    }
+                                                } catch (err) {
+                                                    _didIteratorError2 = true;
+                                                    _iteratorError2 = err;
+                                                } finally {
+                                                    try {
+                                                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                                            _iterator2.return();
+                                                        }
+                                                    } finally {
+                                                        if (_didIteratorError2) {
+                                                            throw _iteratorError2;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            request.continue();
                                         }
-                                        request.continue({ headers: headers });
                                     });
 
-                                    _context2.next = 18;
-                                    return page.goto(options.url);
+                                    navigateOptions = {
+                                        timeout: options.timeout,
+                                        waitUntil: 'load' // TODO create option for waitUntil
 
-                                case 18:
-                                    response = _context2.sent;
+                                        // Begin navigating to url
+                                    };
+                                    gotoError = null;
+                                    _context4.next = 23;
+                                    return page.goto(options.url, navigateOptions).catch(function () {
+                                        var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(err) {
+                                            return _regenerator2.default.wrap(function _callee3$(_context3) {
+                                                while (1) {
+                                                    switch (_context3.prev = _context3.next) {
+                                                        case 0:
+                                                            _context3.next = 2;
+                                                            return browser.close();
+
+                                                        case 2:
+                                                            gotoError = abortMessage ? new Error(abortMessage) : new Error(err);
+
+                                                        case 3:
+                                                        case "end":
+                                                            return _context3.stop();
+                                                    }
+                                                }
+                                            }, _callee3, _this3);
+                                        }));
+
+                                        return function (_x4) {
+                                            return _ref4.apply(this, arguments);
+                                        };
+                                    }());
+
+                                case 23:
+                                    response = _context4.sent;
+
+                                    if (response) {
+                                        _context4.next = 29;
+                                        break;
+                                    }
+
+                                    rejectMsg = gotoError || new Error("Unhandled response from page.goto");
+
+                                    reject(rejectMsg);
+                                    _context4.next = 41;
+                                    break;
+
+                                case 29:
                                     headers = response.headers();
                                     statusCode = response.status();
-                                    //await page.waitFor(2000);
+                                    // Get html
 
-                                    _context2.next = 23;
+                                    _context4.next = 33;
                                     return page.evaluate(function () {
                                         return document.documentElement.outerHTML;
                                     });
 
-                                case 23:
-                                    content = _context2.sent;
-                                    _context2.next = 26;
+                                case 33:
+                                    content = _context4.sent;
+                                    ;
+
+                                    // await page.screenshot({'path':'/path/to/save/screenshot'});
+
+                                    _context4.next = 37;
                                     return browser.close();
 
-                                case 26:
+                                case 37:
 
                                     // Debug info
                                     diff = process.hrtime(t0);
@@ -343,12 +429,12 @@ var Download = function () {
                                     }
                                     resolve({ statusCode: statusCode, headers: headers, content: content, time: time });
 
-                                case 30:
+                                case 41:
                                 case "end":
-                                    return _context2.stop();
+                                    return _context4.stop();
                             }
                         }
-                    }, _callee2, _this3);
+                    }, _callee4, _this3);
                 }));
 
                 return function (_x, _x2) {
