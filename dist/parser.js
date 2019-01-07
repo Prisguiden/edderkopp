@@ -52,8 +52,8 @@ var Parser = function () {
     }, {
         key: 'links',
         value: function links() {
-            var link = arguments.length <= 0 || arguments[0] === undefined ? [{ elem: 'a' }] : arguments[0];
-            var skip = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+            var link = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [{ elem: 'a' }];
+            var skip = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
             var $ = this._$;
             var links = [];
@@ -182,70 +182,77 @@ var Parser = function () {
                 values = [];
             var dataType = Array.isArray(rule.data) ? rule.data[0] : rule.data;
             $elem.each(function () {
-                var _this2 = this;
-
-                (function () {
-                    switch (dataType) {
-                        case 'html':
-                            // Get all content including tags
-                            // Ex: <p>paragraph 1</p> <p>paragraph 2</p> <p>paragraph 3</p>
-                            value = $(_this2).html().trim();
+                switch (dataType) {
+                    case 'html':
+                        // Get all content including tags
+                        // Ex: <p>paragraph 1</p> <p>paragraph 2</p> <p>paragraph 3</p>
+                        value = $(this).html().trim();
+                        if (value) {
+                            values.push(value);
+                        }
+                        break;
+                    case 'text':
+                        // Get only text nodes
+                        // Ex: <span>skip this</span> get this <span>skip this</span>
+                        var nodes = [];
+                        $(this).contents().each(function (i, el) {
+                            if (el.nodeType == 3) {
+                                // 3 = TEXT_NODE
+                                value = el.data.trim();
+                                if (value) {
+                                    nodes.push(el.data.trim());
+                                }
+                            }
+                        });
+                        var index = typeof rule.data !== 'string' ? rule.data[1] : false;
+                        if (index !== false) {
+                            values.push(nodes[index]);
+                        } else {
+                            values = [].concat(values, nodes);
+                        }
+                        break;
+                    case 'attr':
+                        // Get content from attribute
+                        // Ex: <img src="value">, <a href="value">foo</a>
+                        for (var i = 1; i < rule.data.length; i++) {
+                            value = $(this).attr(rule.data[i]);
                             if (value) {
                                 values.push(value);
+                            } else if (value === undefined && rule.elem[1] !== 'optional') {
+                                (0, _bus.warn)(prefix + 'Attribute not found: ' + rule.data[i]);
                             }
-                            break;
-                        case 'text':
-                            // Get only text nodes
-                            // Ex: <span>skip this</span> get this <span>skip this</span>
-                            var nodes = [];
-                            $(_this2).contents().each(function (i, el) {
-                                if (el.nodeType == 3) {
-                                    // 3 = TEXT_NODE
-                                    value = el.data.trim();
-                                    if (value) {
-                                        nodes.push(el.data.trim());
-                                    }
-                                }
-                            });
-                            var index = typeof rule.data !== 'string' ? rule.data[1] : false;
-                            if (index !== false) {
-                                values.push(nodes[index]);
-                            } else {
-                                values = [].concat(values, nodes);
-                            }
-                            break;
-                        case 'attr':
-                            // Get content from attribute
-                            // Ex: <img src="value">, <a href="value">foo</a>
-                            for (var i = 1; i < rule.data.length; i++) {
-                                value = $(_this2).attr(rule.data[i]);
-                                if (value) {
-                                    values.push(value);
-                                } else if (value === undefined && rule.elem[1] !== 'optional') {
-                                    (0, _bus.warn)(prefix + 'Attribute not found: ' + rule.data[i]);
-                                }
-                            }
-                            break;
-                        case 'data':
-                            // Get content from data
-                            // Ex: <div data-img-a="value" data-img-b="value" data-img-c="value">
-                            for (var _i = 1; _i < rule.data.length; _i++) {
-                                value = $(_this2).data(rule.data[_i]);
-                                if (value) {
-                                    values.push(value);
-                                } else if (value === undefined && rule.elem[1] !== 'optional') {
-                                    (0, _bus.warn)(prefix + 'Data attribute not found: ' + rule.data[_i]);
-                                }
-                            }
-                            break;
-                        default:
-                            // Get only text (strip away tags)
-                            value = $(_this2).text().trim();
+                        }
+                        break;
+                    case 'data':
+                        // Get content from data
+                        // Ex: <div data-img-a="value" data-img-b="value" data-img-c="value">
+                        for (var _i = 1; _i < rule.data.length; _i++) {
+                            value = $(this).data(rule.data[_i]);
                             if (value) {
                                 values.push(value);
+                            } else if (value === undefined && rule.elem[1] !== 'optional') {
+                                (0, _bus.warn)(prefix + 'Data attribute not found: ' + rule.data[_i]);
                             }
-                    }
-                })();
+                        }
+                        break;
+                    case 'json':
+                        // Get json from data
+                        value = $(this).text().trim();
+                        if (value) {
+                            try {
+                                // console.log(value);
+                                var json = JSON.parse(value);
+                                values.push(json);
+                            } catch (err) {}
+                        }
+                        break;
+                    default:
+                        // Get only text (strip away tags)
+                        value = $(this).text().trim();
+                        if (value) {
+                            values.push(value);
+                        }
+                }
             });
 
             // Run tasks on values

@@ -189,6 +189,17 @@ export default class Parser {
                         }
                     }
                     break;
+                case 'json':
+                    // Get json from data
+                    value = $(this).text().trim();
+                    if (value) {
+                        try {
+                            // console.log(value);
+                            let json = JSON.parse(value)
+                            values.push(json);
+                        } catch (err) {}
+                    }
+                    break;
                 default:
                     // Get only text (strip away tags)
                     value = $(this).text().trim();
