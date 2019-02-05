@@ -31,10 +31,16 @@ var _url2 = _interopRequireDefault(_url);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Config = function () {
+    // regular require function.
+
     function Config() {
         (0, _classCallCheck3.default)(this, Config);
         this._cache = {};
+        this._requireFunc = null;
 
+        // Force webpack to run regular require() because _parse() is running a dynamic require
+        // https://github.com/webpack/webpack/issues/4175
+        this._requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
         this._dir = process.env.NODE_CONFIG_DIR || process.cwd() + '/config';
     }
 
@@ -233,7 +239,7 @@ var Config = function () {
         key: '_parse',
         value: function _parse(file) {
             if (file.match(/\.js$/)) {
-                return require(file);
+                return this._requireFunc(file);
             } else {
                 return false;
             }

@@ -4,8 +4,12 @@ import u from 'url';
 class Config {
 
     _cache = {};
+    _requireFunc = null; // regular require function.
 
     constructor() {
+        // Force webpack to run regular require() because _parse() is running a dynamic require
+        // https://github.com/webpack/webpack/issues/4175
+        this._requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
         this._dir = process.env.NODE_CONFIG_DIR || process.cwd() + '/config';
     }
 
@@ -92,7 +96,7 @@ class Config {
     // Open and parse file
     _parse(file) {
         if (file.match(/\.js$/)) {
-            return require(file);
+            return this._requireFunc(file);
         } else {
             return false;
         }
