@@ -1,6 +1,6 @@
 {
   "name": "edderkopp",
-  "version": "1.0.0-beta",
+  "version": "1.0.1-beta",
   "description": "Crawl/scrape webpages using simple config files",
   "main": "dist/index.js",
   "scripts": {
