@@ -70,13 +70,13 @@ var Crawler = function (_EventEmitter) {
     (0, _inherits3.default)(Crawler, _EventEmitter);
 
     function Crawler(url) {
-        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         (0, _classCallCheck3.default)(this, Crawler);
 
         // must
 
         // Set root url
-        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Crawler).call(this));
+        var _this = (0, _possibleConstructorReturn3.default)(this, (Crawler.__proto__ || (0, _getPrototypeOf2.default)(Crawler)).call(this));
 
         _this._skipFiles = /jpg|jpeg|png|gif|bmp|tif|tiff|svg|pdf|wav|mpa|mp3|avi|flv|m4v|mov|mp4|mpg|swf|wmv|tar|gz|zip|rar|pkg|7z|xls|doc|log|odt|rtf|txt|exe|jar|com|bat/i;
         _this._url = _url2.default.parse(url, true, true);
@@ -98,8 +98,8 @@ var Crawler = function (_EventEmitter) {
     (0, _createClass3.default)(Crawler, [{
         key: 'start',
         value: function () {
-            var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
-                var target = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+                var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var url;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
@@ -147,7 +147,7 @@ var Crawler = function (_EventEmitter) {
                 }, _callee, this);
             }));
 
-            function start(_x2) {
+            function start() {
                 return _ref.apply(this, arguments);
             }
 
@@ -159,7 +159,7 @@ var Crawler = function (_EventEmitter) {
     }, {
         key: '_crawl',
         value: function () {
-            var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
                 var url, content, parser, links, data;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
@@ -451,7 +451,7 @@ var Crawler = function (_EventEmitter) {
     }, {
         key: '_robot',
         value: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3() {
+            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
                 var url, content, delay;
                 return _regenerator2.default.wrap(function _callee3$(_context3) {
                     while (1) {
