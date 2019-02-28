@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-// NOTE!
-// This example requires that you have installed devDependencies (or "babel-cli" and "babel-preset-es2015" to be spesific)
 // Transpile or run directly with "npm run example" (se package.json)
 
 import fs from 'fs';
-import { log, config, Parser } from "../dist";
+import log from "../src/log";
+import config from "../src/config";
+import Parser from "../src/parser";
 
-Parser.html = fs.readFileSync(__dirname + '/site.html').toString();
-const conf = config.get(__dirname + '/site.json');
-log.info(Parser.getData(conf.rules.foobar));
+const parser = new Parser(fs.readFileSync(__dirname + '/site.html').toString());
+const conf = config.get(__dirname + '/site.js');
+log.info(parser.data(conf.rules.foobar));

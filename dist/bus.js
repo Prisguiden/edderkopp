@@ -1,48 +1,41 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
 exports.warn = warn;
+exports.default = void 0;
 
-var _events = require('events');
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _events2 = _interopRequireDefault(_events);
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
-var Bus = function (_EventEmitter) {
-    (0, _inherits3.default)(Bus, _EventEmitter);
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-    function Bus() {
-        (0, _classCallCheck3.default)(this, Bus);
-        return (0, _possibleConstructorReturn3.default)(this, (Bus.__proto__ || (0, _getPrototypeOf2.default)(Bus)).apply(this, arguments));
-    }
+var _events = _interopRequireDefault(require("events"));
 
-    return Bus;
-}(_events2.default);
+var Bus =
+/*#__PURE__*/
+function (_EventEmitter) {
+  (0, _inherits2.default)(Bus, _EventEmitter);
+
+  function Bus() {
+    (0, _classCallCheck2.default)(this, Bus);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Bus).apply(this, arguments));
+  }
+
+  return Bus;
+}(_events.default);
 
 var bus = new Bus();
+var _default = bus;
+exports.default = _default;
 
-exports.default = bus;
 function warn(message) {
-    bus.emit('log', 'warn', message);
+  bus.emit('log', 'warn', message);
 }
 //# sourceMappingURL=bus.js.map
