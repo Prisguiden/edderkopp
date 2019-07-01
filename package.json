@@ -40,8 +40,8 @@
     "@babel/node": "^7.4.5",
     "@babel/runtime": "^7.4.5",
     "cheerio": "^0.20.0",
-    "puppeteer": "^1.17.0",
-    "request": "^2.72.0",
+    "puppeteer": "^1.18.1",
+    "request": "^2.88.0",
     "robots-parser": "^1.0.0",
     "winston": "^2.2.0"
   },
