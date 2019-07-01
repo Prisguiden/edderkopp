@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -27,14 +27,14 @@ function () {
   // keep properties with value null in dataset
   // cheerio
   function Parser(html) {
-    (0, _classCallCheck2.default)(this, Parser);
-    (0, _defineProperty2.default)(this, "includeNull", true);
-    (0, _defineProperty2.default)(this, "_$", void 0);
+    (0, _classCallCheck2["default"])(this, Parser);
+    (0, _defineProperty2["default"])(this, "includeNull", true);
+    (0, _defineProperty2["default"])(this, "_$", void 0);
     this._html = html;
-    this._$ = _cheerio.default.load(html);
+    this._$ = _cheerio["default"].load(html);
   }
 
-  (0, _createClass2.default)(Parser, [{
+  (0, _createClass2["default"])(Parser, [{
     key: "has",
     value: function has(selector) {
       var $ = this._$;
@@ -97,7 +97,7 @@ function () {
           var url = href.trim();
 
           if (url && l.task) {
-            url = _tasks.default.run(l.task, url);
+            url = _tasks["default"].run(l.task, url);
           }
 
           if (url) {
@@ -281,7 +281,7 @@ function () {
       }); // Run tasks on values
 
       if (rule.task && values.length) {
-        values = _tasks.default.run(rule.task, values);
+        values = _tasks["default"].run(rule.task, values);
       } // No need to wrap single/empty values in an array
 
 
@@ -300,5 +300,5 @@ function () {
   return Parser;
 }();
 
-exports.default = Parser;
+exports["default"] = Parser;
 //# sourceMappingURL=parser.js.map

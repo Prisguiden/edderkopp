@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -16,13 +16,13 @@ var Queue =
 function () {
   function Queue() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    (0, _classCallCheck2.default)(this, Queue);
+    (0, _classCallCheck2["default"])(this, Queue);
     this.maxItems = options.maxItems !== undefined ? options.maxItems : Number.MAX_VALUE;
     this.maxDepth = options.maxDepth !== undefined ? options.maxDepth : Number.MAX_VALUE;
     this.init();
   }
 
-  (0, _createClass2.default)(Queue, [{
+  (0, _createClass2["default"])(Queue, [{
     key: "init",
     value: function init() {
       this._stack = {
@@ -88,5 +88,5 @@ function () {
   return Queue;
 }();
 
-exports.default = Queue;
+exports["default"] = Queue;
 //# sourceMappingURL=queue.js.map

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -28,13 +28,13 @@ var Download =
 function () {
   // delay 2-5 sec (simulate a user)
   function Download(options) {
-    (0, _classCallCheck2.default)(this, Download);
-    (0, _defineProperty2.default)(this, "_timeout", 30000);
-    (0, _defineProperty2.default)(this, "_cache", false);
-    (0, _defineProperty2.default)(this, "_delay", [2, 5]);
-    (0, _defineProperty2.default)(this, "_force", false);
-    (0, _defineProperty2.default)(this, "_followRedirect", true);
-    (0, _defineProperty2.default)(this, "_renderWithBrowser", false);
+    (0, _classCallCheck2["default"])(this, Download);
+    (0, _defineProperty2["default"])(this, "_timeout", 30000);
+    (0, _defineProperty2["default"])(this, "_cache", false);
+    (0, _defineProperty2["default"])(this, "_delay", [2, 5]);
+    (0, _defineProperty2["default"])(this, "_force", false);
+    (0, _defineProperty2["default"])(this, "_followRedirect", true);
+    (0, _defineProperty2["default"])(this, "_renderWithBrowser", false);
 
     if (options.timeout !== undefined) {
       this._timeout = options.timeout;
@@ -65,13 +65,13 @@ function () {
     }
   }
 
-  (0, _createClass2.default)(Download, [{
+  (0, _createClass2["default"])(Download, [{
     key: "get",
     value: function get(url, cookies) {
       var _this = this;
 
       if (cookies) {
-        this._jar = _request.default.jar();
+        this._jar = _request["default"].jar();
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -87,8 +87,8 @@ function () {
           _iteratorError = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-              _iterator.return();
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
             }
           } finally {
             if (_didIteratorError) {
@@ -106,11 +106,11 @@ function () {
         };
         return Promise.resolve(res);
       } else {
-        return (0, _asyncToGenerator2.default)(
+        return (0, _asyncToGenerator2["default"])(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee() {
+        _regenerator["default"].mark(function _callee() {
           var delay, options, res;
-          return _regenerator.default.wrap(function _callee$(_context) {
+          return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
@@ -140,16 +140,19 @@ function () {
                   options = {
                     url: url,
                     headers: {
-                      'User-Agent': USER_AGENT
+                      "User-Agent": USER_AGENT
                     },
                     followRedirect: _this._followRedirect,
                     gzip: true,
                     timeout: _this._timeout,
+                    agentOptions: {
+                      ecdhCurve: "auto"
+                    },
                     bannedRequestUrlsRegexp: BANNED_REQUEST_URLS_REGEXP ? BANNED_REQUEST_URLS_REGEXP : []
                   };
 
                   if (_this._headers) {
-                    options.headers = (0, _objectSpread2.default)({}, options.headers, _this._headers);
+                    options.headers = (0, _objectSpread2["default"])({}, options.headers, _this._headers);
                   }
 
                   if (_this._jar) {
@@ -198,7 +201,7 @@ function () {
 
       return new Promise(function (resolve, reject) {
         var t0 = process.hrtime();
-        (0, _request.default)(options, function (error, response, content) {
+        (0, _request["default"])(options, function (error, response, content) {
           if (error !== null) {
             reject(error);
           } // Note: the strange 301|302 condition is for the very weird case where a site returns a 301|302
@@ -219,7 +222,7 @@ function () {
                 time: time
               });
             } else {
-              reject('Response code: ' + response.statusCode);
+              reject("Response code: " + response.statusCode);
             }
         });
       });
@@ -232,19 +235,19 @@ function () {
       return new Promise(
       /*#__PURE__*/
       function () {
-        var _ref2 = (0, _asyncToGenerator2.default)(
+        var _ref2 = (0, _asyncToGenerator2["default"])(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee4(resolve, reject) {
+        _regenerator["default"].mark(function _callee4(resolve, reject) {
           var t0, debug, abortMessage, browser, page, headersToSet, key, navigateOptions, gotoError, response, rejectMsg, headers, statusCode, content, diff, time;
-          return _regenerator.default.wrap(function _callee4$(_context4) {
+          return _regenerator["default"].wrap(function _callee4$(_context4) {
             while (1) {
               switch (_context4.prev = _context4.next) {
                 case 0:
                   t0 = process.hrtime();
                   debug = false;
-                  abortMessage = '';
+                  abortMessage = "";
                   _context4.next = 5;
-                  return _puppeteer.default.launch({
+                  return _puppeteer["default"].launch({
                     headless: true,
                     slowMo: 0 // slow down by ms
 
@@ -261,13 +264,13 @@ function () {
                   /**
                    * Handle exceptions
                    */
-                  page.on('error',
+                  page.on("error",
                   /*#__PURE__*/
                   function () {
-                    var _ref3 = (0, _asyncToGenerator2.default)(
+                    var _ref3 = (0, _asyncToGenerator2["default"])(
                     /*#__PURE__*/
-                    _regenerator.default.mark(function _callee2(err) {
-                      return _regenerator.default.wrap(function _callee2$(_context2) {
+                    _regenerator["default"].mark(function _callee2(err) {
+                      return _regenerator["default"].wrap(function _callee2$(_context2) {
                         while (1) {
                           switch (_context2.prev = _context2.next) {
                             case 0:
@@ -289,7 +292,7 @@ function () {
                       return _ref3.apply(this, arguments);
                     };
                   }());
-                  page.on('pageerror', function (err) {
+                  page.on("pageerror", function (err) {
                     if (debug) {
                       console.log(err.toString());
                     }
@@ -315,7 +318,7 @@ function () {
 
                 case 18:
                   // for each request/resource download
-                  page.on('request', function (request) {
+                  page.on("request", function (request) {
                     var requestUrl = request.url(); // Handle navigation redirects based on followRedirect option.
 
                     if (!options.followRedirect && request.isNavigationRequest() && request.redirectChain().length) {
@@ -343,8 +346,8 @@ function () {
                           _iteratorError2 = err;
                         } finally {
                           try {
-                            if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                              _iterator2.return();
+                            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                              _iterator2["return"]();
                             }
                           } finally {
                             if (_didIteratorError2) {
@@ -354,24 +357,24 @@ function () {
                         }
                       }
 
-                      request.continue();
+                      request["continue"]();
                     }
                   });
                   navigateOptions = {
                     timeout: options.timeout,
-                    waitUntil: 'load' // TODO create option for waitUntil
-                    // Begin navigating to url
+                    waitUntil: "load" // TODO create option for waitUntil
 
-                  };
+                  }; // Begin navigating to url
+
                   gotoError = null;
                   _context4.next = 23;
-                  return page.goto(options.url, navigateOptions).catch(
+                  return page["goto"](options.url, navigateOptions)["catch"](
                   /*#__PURE__*/
                   function () {
-                    var _ref4 = (0, _asyncToGenerator2.default)(
+                    var _ref4 = (0, _asyncToGenerator2["default"])(
                     /*#__PURE__*/
-                    _regenerator.default.mark(function _callee3(err) {
-                      return _regenerator.default.wrap(function _callee3$(_context3) {
+                    _regenerator["default"].mark(function _callee3(err) {
+                      return _regenerator["default"].wrap(function _callee3$(_context3) {
                         while (1) {
                           switch (_context3.prev = _context3.next) {
                             case 0:
@@ -404,7 +407,7 @@ function () {
 
                   rejectMsg = gotoError || new Error("Unhandled response from page.goto");
                   reject(rejectMsg);
-                  _context4.next = 41;
+                  _context4.next = 40;
                   break;
 
                 case 29:
@@ -418,12 +421,10 @@ function () {
 
                 case 33:
                   content = _context4.sent;
-                  ; // await page.screenshot({'path':'/path/to/save/screenshot'});
-
-                  _context4.next = 37;
+                  _context4.next = 36;
                   return browser.close();
 
-                case 37:
+                case 36:
                   // Debug info
                   diff = process.hrtime(t0);
                   time = diff[0] + diff[1] * 1e-9;
@@ -439,7 +440,7 @@ function () {
                     time: time
                   });
 
-                case 41:
+                case 40:
                 case "end":
                   return _context4.stop();
               }
@@ -456,5 +457,5 @@ function () {
   return Download;
 }();
 
-exports.default = Download;
+exports["default"] = Download;
 //# sourceMappingURL=download.js.map

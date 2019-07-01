@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -21,10 +21,10 @@ var Tasks =
 /*#__PURE__*/
 function () {
   function Tasks() {
-    (0, _classCallCheck2.default)(this, Tasks);
+    (0, _classCallCheck2["default"])(this, Tasks);
   }
 
-  (0, _createClass2.default)(Tasks, null, [{
+  (0, _createClass2["default"])(Tasks, null, [{
     key: "inject",
     value: function inject(tasks) {
       for (var prop in tasks) {
@@ -92,8 +92,8 @@ function () {
               _iteratorError2 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                  _iterator2.return();
+                if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                  _iterator2["return"]();
                 }
               } finally {
                 if (_didIteratorError2) {
@@ -117,8 +117,8 @@ function () {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
@@ -138,8 +138,8 @@ function () {
 }(); // Default tasks
 
 
-exports.default = Tasks;
-(0, _defineProperty2.default)(Tasks, "_tasks", {});
+exports["default"] = Tasks;
+(0, _defineProperty2["default"])(Tasks, "_tasks", {});
 var tasks = {
   // task: [ 'eval', 'JSON.parse(value).foo.bar' ]
   // task: [ 'eval', 'value.foo.bar[0].message' ]

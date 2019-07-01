@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -22,9 +22,9 @@ var Config =
 function () {
   // regular require function.
   function Config() {
-    (0, _classCallCheck2.default)(this, Config);
-    (0, _defineProperty2.default)(this, "_cache", {});
-    (0, _defineProperty2.default)(this, "_requireFunc", null);
+    (0, _classCallCheck2["default"])(this, Config);
+    (0, _defineProperty2["default"])(this, "_cache", {});
+    (0, _defineProperty2["default"])(this, "_requireFunc", null);
     // Force webpack to run regular require() because _parse() is running a dynamic require
     // https://github.com/webpack/webpack/issues/4175
     this._requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
@@ -32,7 +32,7 @@ function () {
   } // Set config dir
 
 
-  (0, _createClass2.default)(Config, [{
+  (0, _createClass2["default"])(Config, [{
     key: "get",
     // Get config
     value: function get(arg) {
@@ -81,8 +81,8 @@ function () {
           _iteratorError = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-              _iterator.return();
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
             }
           } finally {
             if (_didIteratorError) {
@@ -120,8 +120,8 @@ function () {
         _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
           }
         } finally {
           if (_didIteratorError2) {
@@ -155,8 +155,8 @@ function () {
         _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
           }
         } finally {
           if (_didIteratorError3) {
@@ -173,7 +173,7 @@ function () {
     value: function _getByUrl(url) {
       this._init();
 
-      var hostname = _url.default.parse(url).hostname;
+      var hostname = _url["default"].parse(url).hostname;
 
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
@@ -185,7 +185,7 @@ function () {
 
           var _config2 = this._parse(file);
 
-          if (_config2 && _config2.url && hostname == _url.default.parse(_config2.url).hostname) {
+          if (_config2 && _config2.url && hostname == _url["default"].parse(_config2.url).hostname) {
             return _config2;
           }
         }
@@ -194,8 +194,8 @@ function () {
         _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-            _iterator4.return();
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
           }
         } finally {
           if (_didIteratorError4) {
@@ -234,10 +234,10 @@ function () {
       var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator5 = _fs.default.readdirSync(dir)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+        for (var _iterator5 = _fs["default"].readdirSync(dir)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           var file = _step5.value;
 
-          if (_fs.default.statSync(dir + '/' + file).isDirectory()) {
+          if (_fs["default"].statSync(dir + '/' + file).isDirectory()) {
             files = files.concat(this._getFiles(dir + '/' + file));
           } else {
             files.push(dir + '/' + file);
@@ -248,8 +248,8 @@ function () {
         _iteratorError5 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-            _iterator5.return();
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
           }
         } finally {
           if (_didIteratorError5) {
@@ -272,5 +272,5 @@ function () {
 
 var config = new Config();
 var _default = config;
-exports.default = _default;
+exports["default"] = _default;
 //# sourceMappingURL=config.js.map

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -42,24 +42,24 @@ var _queue = _interopRequireDefault(require("./queue"));
 var Crawler =
 /*#__PURE__*/
 function (_EventEmitter) {
-  (0, _inherits2.default)(Crawler, _EventEmitter);
+  (0, _inherits2["default"])(Crawler, _EventEmitter);
 
   // Skip some common filetypes 'cause you never know whats out there (http://fileinfo.com/filetypes/common)
   function Crawler(url) {
     var _this;
 
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    (0, _classCallCheck2.default)(this, Crawler);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Crawler).call(this)); // must
+    (0, _classCallCheck2["default"])(this, Crawler);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(Crawler).call(this)); // must
     // Set root url
 
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "_skipFiles", /jpg|jpeg|png|gif|bmp|tif|tiff|svg|pdf|wav|mpa|mp3|avi|flv|m4v|mov|mp4|mpg|swf|wmv|tar|gz|zip|rar|pkg|7z|xls|doc|log|odt|rtf|txt|exe|jar|com|bat/i);
-    _this._url = _url.default.parse(url, true, true); // Delay
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "_skipFiles", /jpg|jpeg|png|gif|bmp|tif|tiff|svg|pdf|wav|mpa|mp3|avi|flv|m4v|mov|mp4|mpg|swf|wmv|tar|gz|zip|rar|pkg|7z|xls|doc|log|odt|rtf|txt|exe|jar|com|bat/i);
+    _this._url = _url["default"].parse(url, true, true); // Delay
 
     _this._delay = options.delay !== undefined ? options.delay : 5; // seconds
     // Use Queue to handle links
 
-    _this._queue = new _queue.default({
+    _this._queue = new _queue["default"]({
       maxItems: options.maxItems,
       maxDepth: options.maxDepth
     });
@@ -67,24 +67,24 @@ function (_EventEmitter) {
   } // Start crawling!
 
 
-  (0, _createClass2.default)(Crawler, [{
+  (0, _createClass2["default"])(Crawler, [{
     key: "start",
     value: function () {
-      var _start = (0, _asyncToGenerator2.default)(
+      var _start = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
+      _regenerator["default"].mark(function _callee() {
         var target,
             url,
             _args = arguments;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 target = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};
 
-                _log.default.debug('[crawler] start');
+                _log["default"].debug('[crawler] start');
 
-                _log.default.silly(target); // Handle robots.txt
+                _log["default"].silly(target); // Handle robots.txt
 
 
                 _context.next = 5;
@@ -92,7 +92,7 @@ function (_EventEmitter) {
 
               case 5:
                 // Handle delay
-                _download.default.delay = this._delay; // Handle target
+                _download["default"].delay = this._delay; // Handle target
 
                 this._mode = target.mode;
                 this._path = target.path || '';
@@ -130,11 +130,11 @@ function (_EventEmitter) {
   }, {
     key: "_crawl",
     value: function () {
-      var _crawl2 = (0, _asyncToGenerator2.default)(
+      var _crawl2 = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee2() {
+      _regenerator["default"].mark(function _callee2() {
         var url, content, parser, links, data;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -149,7 +149,7 @@ function (_EventEmitter) {
                 if (this._depth != this._queue.depth) {
                   this._depth = this._queue.depth;
 
-                  _log.default.verbose('[crawler] --- depth %s ---', this._queue.depth);
+                  _log["default"].verbose('[crawler] --- depth %s ---', this._queue.depth);
                 } // Download
 
 
@@ -157,18 +157,18 @@ function (_EventEmitter) {
                 _context2.prev = 4;
 
                 // Don't delay cached urls or first download
-                if (_download.default.cache.has(url)) {
-                  _download.default.delay = 0;
+                if (_download["default"].cache.has(url)) {
+                  _download["default"].delay = 0;
                 } else if (!this._useDelay) {
                   // _useDelay is used to check for first download (default undefined)
-                  _download.default.delay = 0;
+                  _download["default"].delay = 0;
                   this._useDelay = true;
                 } else {
-                  _download.default.delay = this._delay;
+                  _download["default"].delay = this._delay;
                 }
 
                 _context2.next = 8;
-                return _download.default.get(url);
+                return _download["default"].get(url);
 
               case 8:
                 content = _context2.sent;
@@ -179,13 +179,13 @@ function (_EventEmitter) {
                 _context2.prev = 11;
                 _context2.t0 = _context2["catch"](4);
 
-                _log.default.error(_context2.t0);
+                _log["default"].error(_context2.t0);
 
               case 14:
                 // Get links and data
                 if (content) {
                   // TODO: Move this block + _getLinks & _getData into new function "handleContent()"
-                  parser = new _parser.default(content); // Get links and add to queue
+                  parser = new _parser["default"](content); // Get links and add to queue
 
                   links = this._getLinks(parser);
 
@@ -207,7 +207,7 @@ function (_EventEmitter) {
                   break;
                 }
 
-                _log.default.debug('[crawler] done');
+                _log["default"].debug('[crawler] done');
 
                 return _context2.abrupt("return");
 
@@ -261,12 +261,12 @@ function (_EventEmitter) {
 
         links = parser.links(link, this._skip);
 
-        _log.default.debug('[crawler] %d links found', links.length); // Validate links
+        _log["default"].debug('[crawler] %d links found', links.length); // Validate links
 
 
         links = this._validateLinks(links);
 
-        _log.default.debug('[crawler] %d links passed validation', links.length);
+        _log["default"].debug('[crawler] %d links passed validation', links.length);
       }
 
       return links;
@@ -322,12 +322,12 @@ function (_EventEmitter) {
           var link = _step.value;
 
           // Populate url object
-          var url = _url.default.parse(link, true, true); // https://nodejs.org/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
+          var url = _url["default"].parse(link, true, true); // https://nodejs.org/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
           // Skip protocols other than http(s) (mailto, ftp, ..)
 
 
           if (url.protocol && url.protocol.indexOf('http') !== 0) {
-            _log.default.silly('[crawler] Skip: ' + link + ' (unsupported protocol)');
+            _log["default"].silly('[crawler] Skip: ' + link + ' (unsupported protocol)');
 
             continue;
           }
@@ -337,7 +337,7 @@ function (_EventEmitter) {
             url.hostname = this._url.hostname;
           } else if (url.hostname != this._url.hostname) {
             // Skip different/external hosts
-            _log.default.silly('[crawler] Skip: ' + link + ' (different host)');
+            _log["default"].silly('[crawler] Skip: ' + link + ' (different host)');
 
             continue;
           }
@@ -348,7 +348,7 @@ function (_EventEmitter) {
 
             if (matches) {
               if (matches[1].match(this._skipFiles) !== null) {
-                _log.default.silly('[crawler] Skip: ' + link + ' (file type)');
+                _log["default"].silly('[crawler] Skip: ' + link + ' (file type)');
 
                 continue;
               }
@@ -367,7 +367,7 @@ function (_EventEmitter) {
           var urlString = url.format(); // Skip handled links
 
           if (this._visited[urlString]) {
-            _log.default.silly('[crawler] Skip: ' + link + ' (already visited)');
+            _log["default"].silly('[crawler] Skip: ' + link + ' (already visited)');
 
             continue;
           } else {
@@ -376,12 +376,12 @@ function (_EventEmitter) {
 
 
           if (this._robots && this._robots.isDisallowed(urlString, USER_AGENT)) {
-            _log.default.silly('[crawler] Skip: ' + link + ' (disallowed in robots.txt)');
+            _log["default"].silly('[crawler] Skip: ' + link + ' (disallowed in robots.txt)');
 
             continue;
           }
 
-          _log.default.silly('[crawler] New:  ' + link);
+          _log["default"].silly('[crawler] New:  ' + link);
 
           result.push(urlString);
         }
@@ -390,8 +390,8 @@ function (_EventEmitter) {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
@@ -420,17 +420,17 @@ function (_EventEmitter) {
       }
 
       url.query = query;
-      return _url.default.parse(url.format(), true, true);
+      return _url["default"].parse(url.format(), true, true);
     } // Handle robots.txt
 
   }, {
     key: "_robot",
     value: function () {
-      var _robot2 = (0, _asyncToGenerator2.default)(
+      var _robot2 = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
+      _regenerator["default"].mark(function _callee3() {
         var url, content, delay;
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -446,7 +446,7 @@ function (_EventEmitter) {
                 content = null;
                 _context3.prev = 4;
                 _context3.next = 7;
-                return _download.default.get(url);
+                return _download["default"].get(url);
 
               case 7:
                 content = _context3.sent;
@@ -457,7 +457,7 @@ function (_EventEmitter) {
                 _context3.prev = 10;
                 _context3.t0 = _context3["catch"](4);
 
-                _log.default.error(_context3.t0);
+                _log["default"].error(_context3.t0);
 
               case 13:
                 if (!content) {
@@ -466,7 +466,7 @@ function (_EventEmitter) {
                 }
 
                 // Init robots parser
-                this._robots = (0, _robotsParser.default)(url, content); // Makes sure we are wanted
+                this._robots = (0, _robotsParser["default"])(url, content); // Makes sure we are wanted
 
                 if (!this._robots.isDisallowed(this._url.format(), USER_AGENT)) {
                   _context3.next = 17;
@@ -487,7 +487,7 @@ function (_EventEmitter) {
                 break;
 
               case 21:
-                _log.default.debug('[crawler] No robots.txt');
+                _log["default"].debug('[crawler] No robots.txt');
 
               case 22:
               case "end":
@@ -505,7 +505,7 @@ function (_EventEmitter) {
     }()
   }]);
   return Crawler;
-}(_events.default);
+}(_events["default"]);
 
-exports.default = Crawler;
+exports["default"] = Crawler;
 //# sourceMappingURL=crawler.js.map

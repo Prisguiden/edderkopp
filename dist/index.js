@@ -8,43 +8,43 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "bus", {
   enumerable: true,
   get: function get() {
-    return _bus.default;
+    return _bus["default"];
   }
 });
 Object.defineProperty(exports, "config", {
   enumerable: true,
   get: function get() {
-    return _config.default;
+    return _config["default"];
   }
 });
 Object.defineProperty(exports, "Tasks", {
   enumerable: true,
   get: function get() {
-    return _tasks.default;
+    return _tasks["default"];
   }
 });
 Object.defineProperty(exports, "Download", {
   enumerable: true,
   get: function get() {
-    return _download.default;
+    return _download["default"];
   }
 });
 Object.defineProperty(exports, "Parser", {
   enumerable: true,
   get: function get() {
-    return _parser.default;
+    return _parser["default"];
   }
 });
 Object.defineProperty(exports, "Crawler", {
   enumerable: true,
   get: function get() {
-    return _crawler.default;
+    return _crawler["default"];
   }
 });
 Object.defineProperty(exports, "Cache", {
   enumerable: true,
   get: function get() {
-    return _cache.default;
+    return _cache["default"];
   }
 });
 

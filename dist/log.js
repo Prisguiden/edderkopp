@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -17,7 +17,7 @@ var _winston = _interopRequireDefault(require("winston"));
 
 var _util = _interopRequireDefault(require("util"));
 
-_winston.default.emitErrs = true;
+_winston["default"].emitErrs = true;
 
 var Log =
 /*#__PURE__*/
@@ -25,12 +25,12 @@ function () {
   function Log() {
     var _this = this;
 
-    (0, _classCallCheck2.default)(this, Log);
-    (0, _defineProperty2.default)(this, "_log", void 0);
-    (0, _defineProperty2.default)(this, "_settings", void 0);
-    (0, _defineProperty2.default)(this, "_level", 'info');
-    this._log = new _winston.default.Logger({
-      transports: [new _winston.default.transports.Console({
+    (0, _classCallCheck2["default"])(this, Log);
+    (0, _defineProperty2["default"])(this, "_log", void 0);
+    (0, _defineProperty2["default"])(this, "_settings", void 0);
+    (0, _defineProperty2["default"])(this, "_level", 'info');
+    this._log = new _winston["default"].Logger({
+      transports: [new _winston["default"].transports.Console({
         level: this._level,
         handleExceptions: false,
         json: false,
@@ -47,16 +47,16 @@ function () {
           arg[_key] = arguments[_key];
         }
 
-        _this._log[func](arg[1] !== undefined ? _util.default.format.apply(null, arg) : arg[0]);
+        _this._log[func](arg[1] !== undefined ? _util["default"].format.apply(null, arg) : arg[0]);
       };
     });
   }
 
-  (0, _createClass2.default)(Log, [{
+  (0, _createClass2["default"])(Log, [{
     key: "file",
     set: function set(filename) {
-      this._log = new _winston.default.Logger({
-        transports: [new _winston.default.transports.File({
+      this._log = new _winston["default"].Logger({
+        transports: [new _winston["default"].transports.File({
           level: this._level,
           filename: filename,
           zippedArchive: true,
@@ -93,5 +93,5 @@ function () {
 
 var log = new Log();
 var _default = log;
-exports.default = _default;
+exports["default"] = _default;
 //# sourceMappingURL=log.js.map

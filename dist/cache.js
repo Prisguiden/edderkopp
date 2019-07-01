@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -19,15 +19,15 @@ var Cache =
 /*#__PURE__*/
 function () {
   function Cache(file) {
-    (0, _classCallCheck2.default)(this, Cache);
-    (0, _defineProperty2.default)(this, "_cache", void 0);
+    (0, _classCallCheck2["default"])(this, Cache);
+    (0, _defineProperty2["default"])(this, "_cache", void 0);
 
     if (file) {
       this._file = file;
     }
   }
 
-  (0, _createClass2.default)(Cache, [{
+  (0, _createClass2["default"])(Cache, [{
     key: "has",
     value: function has(url) {
       this._init();
@@ -52,7 +52,7 @@ function () {
     key: "write",
     value: function write() {
       if (this._file) {
-        _fs.default.writeFileSync(this._file, JSON.stringify(this._cache));
+        _fs["default"].writeFileSync(this._file, JSON.stringify(this._cache));
       }
     }
   }, {
@@ -68,7 +68,7 @@ function () {
       if (this._cache === undefined) {
         if (this._file) {
           try {
-            var f = _fs.default.readFileSync(this._file);
+            var f = _fs["default"].readFileSync(this._file);
 
             this._cache = JSON.parse(f.toString());
           } catch (err) {
@@ -83,5 +83,5 @@ function () {
   return Cache;
 }();
 
-exports.default = Cache;
+exports["default"] = Cache;
 //# sourceMappingURL=cache.js.map
