@@ -21,9 +21,7 @@ var _tasks = _interopRequireDefault(require("./tasks"));
 
 var prefix = '[parser] ';
 
-var Parser =
-/*#__PURE__*/
-function () {
+var Parser = /*#__PURE__*/function () {
   // keep properties with value null in dataset
   // cheerio
   function Parser(html) {
@@ -35,6 +33,11 @@ function () {
   }
 
   (0, _createClass2["default"])(Parser, [{
+    key: "html",
+    get: function get() {
+      return this._html;
+    }
+  }, {
     key: "has",
     value: function has(selector) {
       var $ = this._$;
@@ -290,11 +293,6 @@ function () {
       }
 
       return values;
-    }
-  }, {
-    key: "html",
-    get: function get() {
-      return this._html;
     }
   }]);
   return Parser;

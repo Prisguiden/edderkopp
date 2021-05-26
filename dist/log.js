@@ -17,19 +17,15 @@ var _winston = _interopRequireDefault(require("winston"));
 
 var _util = _interopRequireDefault(require("util"));
 
-_winston["default"].emitErrs = true;
-
-var Log =
-/*#__PURE__*/
-function () {
+var Log = /*#__PURE__*/function () {
   function Log() {
     var _this = this;
 
     (0, _classCallCheck2["default"])(this, Log);
     (0, _defineProperty2["default"])(this, "_log", void 0);
     (0, _defineProperty2["default"])(this, "_settings", void 0);
-    (0, _defineProperty2["default"])(this, "_level", 'info');
-    this._log = new _winston["default"].Logger({
+    (0, _defineProperty2["default"])(this, "_level", "info");
+    this._log = new _winston["default"].createLogger({
       transports: [new _winston["default"].transports.Console({
         level: this._level,
         handleExceptions: false,
@@ -41,7 +37,7 @@ function () {
     });
     this._settings = this._log.transports.console; // Mapping methods to winston and support util.format('a %s c', 'b')
 
-    ['silly', 'debug', 'verbose', 'info', 'warn', 'error'].forEach(function (func) {
+    ["silly", "debug", "verbose", "info", "warn", "error"].forEach(function (func) {
       _this[func] = function () {
         for (var _len = arguments.length, arg = new Array(_len), _key = 0; _key < _len; _key++) {
           arg[_key] = arguments[_key];
@@ -55,7 +51,7 @@ function () {
   (0, _createClass2["default"])(Log, [{
     key: "file",
     set: function set(filename) {
-      this._log = new _winston["default"].Logger({
+      this._log = new _winston["default"].createLogger({
         transports: [new _winston["default"].transports.File({
           level: this._level,
           filename: filename,

@@ -15,9 +15,7 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _fs = _interopRequireDefault(require("fs"));
 
-var Cache =
-/*#__PURE__*/
-function () {
+var Cache = /*#__PURE__*/function () {
   function Cache(file) {
     (0, _classCallCheck2["default"])(this, Cache);
     (0, _defineProperty2["default"])(this, "_cache", void 0);

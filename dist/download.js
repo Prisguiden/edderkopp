@@ -9,8 +9,6 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
-
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -23,9 +21,17 @@ var _request = _interopRequireDefault(require("request"));
 
 var _puppeteer = _interopRequireDefault(require("puppeteer"));
 
-var Download =
-/*#__PURE__*/
-function () {
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var Download = /*#__PURE__*/function () {
   // delay 2-5 sec (simulate a user)
   function Download(options) {
     (0, _classCallCheck2["default"])(this, Download);
@@ -72,29 +78,20 @@ function () {
 
       if (cookies) {
         this._jar = _request["default"].jar();
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+
+        var _iterator = _createForOfIteratorHelper(cookies),
+            _step;
 
         try {
-          for (var _iterator = cookies[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var cookie = _step.value;
 
             this._jar.setCookie(cookie, url);
           }
         } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
+          _iterator.e(err);
         } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
+          _iterator.f();
         }
       } // Get from cache or download it?
 
@@ -106,9 +103,7 @@ function () {
         };
         return Promise.resolve(res);
       } else {
-        return (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee() {
+        return (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
           var delay, options, res;
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
@@ -152,7 +147,7 @@ function () {
                   };
 
                   if (_this._headers) {
-                    options.headers = (0, _objectSpread2["default"])({}, options.headers, _this._headers);
+                    options.headers = _objectSpread(_objectSpread({}, options.headers), _this._headers);
                   }
 
                   if (_this._jar) {
@@ -232,12 +227,8 @@ function () {
     value: function _downloadWithPuppeteer(options) {
       var _this3 = this;
 
-      return new Promise(
-      /*#__PURE__*/
-      function () {
-        var _ref2 = (0, _asyncToGenerator2["default"])(
-        /*#__PURE__*/
-        _regenerator["default"].mark(function _callee4(resolve, reject) {
+      return new Promise( /*#__PURE__*/function () {
+        var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(resolve, reject) {
           var t0, debug, abortMessage, browser, page, headersToSet, key, navigateOptions, gotoError, response, rejectMsg, headers, statusCode, content, diff, time;
           return _regenerator["default"].wrap(function _callee4$(_context4) {
             while (1) {
@@ -264,12 +255,8 @@ function () {
                   /**
                    * Handle exceptions
                    */
-                  page.on("error",
-                  /*#__PURE__*/
-                  function () {
-                    var _ref3 = (0, _asyncToGenerator2["default"])(
-                    /*#__PURE__*/
-                    _regenerator["default"].mark(function _callee2(err) {
+                  page.on("error", /*#__PURE__*/function () {
+                    var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(err) {
                       return _regenerator["default"].wrap(function _callee2$(_context2) {
                         while (1) {
                           switch (_context2.prev = _context2.next) {
@@ -328,12 +315,11 @@ function () {
                     } else {
                       // Skip certain requests
                       if (requestUrl) {
-                        var _iteratorNormalCompletion2 = true;
-                        var _didIteratorError2 = false;
-                        var _iteratorError2 = undefined;
+                        var _iterator2 = _createForOfIteratorHelper(options.bannedRequestUrlsRegexp),
+                            _step2;
 
                         try {
-                          for (var _iterator2 = options.bannedRequestUrlsRegexp[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
                             var regexp = _step2.value;
 
                             if (requestUrl.match(regexp)) {
@@ -342,18 +328,9 @@ function () {
                             }
                           }
                         } catch (err) {
-                          _didIteratorError2 = true;
-                          _iteratorError2 = err;
+                          _iterator2.e(err);
                         } finally {
-                          try {
-                            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                              _iterator2["return"]();
-                            }
-                          } finally {
-                            if (_didIteratorError2) {
-                              throw _iteratorError2;
-                            }
-                          }
+                          _iterator2.f();
                         }
                       }
 
@@ -368,12 +345,8 @@ function () {
 
                   gotoError = null;
                   _context4.next = 23;
-                  return page["goto"](options.url, navigateOptions)["catch"](
-                  /*#__PURE__*/
-                  function () {
-                    var _ref4 = (0, _asyncToGenerator2["default"])(
-                    /*#__PURE__*/
-                    _regenerator["default"].mark(function _callee3(err) {
+                  return page["goto"](options.url, navigateOptions)["catch"]( /*#__PURE__*/function () {
+                    var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(err) {
                       return _regenerator["default"].wrap(function _callee3$(_context3) {
                         while (1) {
                           switch (_context3.prev = _context3.next) {

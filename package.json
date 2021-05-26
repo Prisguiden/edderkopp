@@ -1,6 +1,6 @@
 {
   "name": "edderkopp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Crawl/scrape webpages using simple config files",
   "main": "dist/index.js",
   "scripts": {
@@ -37,19 +37,19 @@
   },
   "homepage": "https://github.com/fractalf/edderkopp",
   "dependencies": {
-    "@babel/node": "^7.7.4",
-    "@babel/runtime": "^7.7.4",
-    "cheerio": "^0.20.0",
-    "puppeteer": "^1.20.0",
-    "request": "^2.88.0",
-    "robots-parser": "^1.0.0",
-    "winston": "^2.2.0"
+    "@babel/node": "^7.14.2",
+    "@babel/runtime": "^7.14.0",
+    "cheerio": "^1.0.0-rc.9",
+    "puppeteer": "^9.1.1",
+    "request": "^2.88.2",
+    "robots-parser": "^2.3.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@babel/preset-env": "^7.14.2"
   }
 }

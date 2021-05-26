@@ -1,52 +1,55 @@
-import winston from 'winston';
-import util from 'util';
-
-winston.emitErrs = true;
+import winston from "winston";
+import util from "util";
 
 class Log {
-
     _log;
     _settings;
-    _level = 'info';
+    _level = "info";
 
     constructor() {
-        this._log = new winston.Logger({
+        this._log = new winston.createLogger({
             transports: [
                 new winston.transports.Console({
                     level: this._level,
                     handleExceptions: false,
                     json: false,
                     prettyPrint: true,
-                    colorize: true
-                })
+                    colorize: true,
+                }),
             ],
-            exitOnError: false
+            exitOnError: false,
         });
         this._settings = this._log.transports.console;
 
         // Mapping methods to winston and support util.format('a %s c', 'b')
-        [ 'silly', 'debug', 'verbose', 'info', 'warn', 'error' ].forEach((func) => {
-            this[func] = (...arg) => {
-                this._log[func](arg[1] !== undefined ? util.format.apply(null, arg) : arg[0]);
+        ["silly", "debug", "verbose", "info", "warn", "error"].forEach(
+            (func) => {
+                this[func] = (...arg) => {
+                    this._log[func](
+                        arg[1] !== undefined
+                            ? util.format.apply(null, arg)
+                            : arg[0]
+                    );
+                };
             }
-        })
+        );
     }
 
     set file(filename) {
-        this._log = new winston.Logger({
+        this._log = new winston.createLogger({
             transports: [
                 new winston.transports.File({
                     level: this._level,
                     filename,
                     zippedArchive: true,
-                    tailable : true,
+                    tailable: true,
                     handleExceptions: false,
                     json: false,
                     maxsize: 5242880, // 5MB
-                    maxFiles: 5
-                })
+                    maxFiles: 5,
+                }),
             ],
-            exitOnError: false
+            exitOnError: false,
         });
         this._settings = this._log.transports.file;
     }
@@ -64,7 +67,6 @@ class Log {
         this._level = level;
         this._settings.level = level;
     }
-
 }
 
 const log = new Log();

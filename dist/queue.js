@@ -11,9 +11,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var Queue =
-/*#__PURE__*/
-function () {
+var Queue = /*#__PURE__*/function () {
   function Queue() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     (0, _classCallCheck2["default"])(this, Queue);
@@ -31,6 +29,16 @@ function () {
       };
       this._depth = 0;
       this._items = 0;
+    }
+  }, {
+    key: "empty",
+    get: function get() {
+      return this._stack.add.length == 0 && this._stack.get.length == 0;
+    }
+  }, {
+    key: "depth",
+    get: function get() {
+      return this._depth;
     }
   }, {
     key: "add",
@@ -73,16 +81,6 @@ function () {
           return false;
         }
       }
-    }
-  }, {
-    key: "empty",
-    get: function get() {
-      return this._stack.add.length == 0 && this._stack.get.length == 0;
-    }
-  }, {
-    key: "depth",
-    get: function get() {
-      return this._depth;
     }
   }]);
   return Queue;
